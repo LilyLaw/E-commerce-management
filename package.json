@@ -1,0 +1,8 @@
+{
+  "name": "E-commerce-management",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:LilyLaw/E-commerce-management.git",
+  "author": "LilyLaw <1444987087@qq.com>",
+  "license": "MIT"
+}
