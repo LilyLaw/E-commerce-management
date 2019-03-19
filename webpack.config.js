@@ -9,7 +9,8 @@ module.exports = {
 	},
 	plugins: [
 		new HtmlWebpackPlugin({
-			title:"电商管理平台"
+			title:"电商管理平台",
+			template:"./src/index.html"
 		})
 	],
 	module: {
@@ -23,7 +24,14 @@ module.exports = {
 			      presets: ['env','react']
 			    }
 			  }
-			}
+			},
+			{
+	        	test: /\.css$/,
+	        	use: [
+			        'style-loader',
+			        'css-loader'
+		        ]
+	       }
 		]
 	}
 };
