@@ -1,0 +1,42 @@
+const menu = [
+	{
+		name:"首页",
+		url:"/"
+	},
+	{
+		name:"商品",
+		url:"/product",
+		children:[
+			{
+				name:"商品管理",
+				url:"/product/man"
+			},
+			{
+				name:"品类管理",
+				url:"/product/type"
+			}
+		]
+	},
+	{
+		name:"订单",
+		url:"/order",
+		children:[
+			{
+				name:"订单管理",
+				url:"/order/man"
+			}
+		]
+	},
+	{
+		name:"用户",
+		url:"/user",
+		children:[
+			{
+				name:"用户列表",
+				url:"/user/man"
+			}
+		]
+	}
+]
+
+export default menu;

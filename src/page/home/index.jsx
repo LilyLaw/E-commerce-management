@@ -1,6 +1,6 @@
 import React from 'react';
 import {Button } from 'antd';
-
+import PageHeader from '../../component/commonCom/pageHeader.jsx';
 class Home extends React.Component{
 	constructor(props){
 		super(props);
@@ -8,8 +8,11 @@ class Home extends React.Component{
 
 	render(){
 		return(
-			<div>
-				这里是内容
+			<div id="page-wrapper">
+				<PageHeader headtitle = {"首页"} />
+				<div id="lll-pagebody">
+					
+				</div>
 			</div>
 		)
 	}

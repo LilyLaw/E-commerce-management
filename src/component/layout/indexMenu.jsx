@@ -1,33 +1,39 @@
 import React from 'react';
 import { Menu, Icon } from 'antd';
+import { Link } from 'react-router-dom';
+import menu from './menudata.jsx';
 
 const SubMenu = Menu.SubMenu;
 
-
 class IndexMenu extends React.Component{
+	renderMenu(item,i){
+		if(item.children){
+			return (
+				<SubMenu key={item.url} title={<Link to={item.url}><span><Icon type="mail" /><span>{item.name}</span></span></Link>}>
+					{item.children.map((itemc,j)=>{return this.renderMenu(itemc,j);})}
+				</SubMenu>
+			)
+		}else{
+			return (
+				<Menu.Item key={item.url}>
+					<Link to={item.url}>
+						<Icon type="pie-chart" />
+						<span>{item.name}</span>
+					</Link>
+				</Menu.Item>
+			)
+		}
+	}
 	render(){
 		return <div>
 			<h1 className="lll-indexmenu">LLL Man</h1>
 			<Menu
-				defaultSelectedKeys={['1']}
-				defaultOpenKeys={['sub1']}
+				defaultSelectedKeys={['/']}
+				// defaultOpenKeys={['sub1']}
 				mode="inline"
 				theme="dark"
 	        >
-				<Menu.Item key="1">
-					<Icon type="pie-chart" />
-					<span>首页</span>
-				</Menu.Item>
-				<SubMenu key="sub1" title={<span><Icon type="mail" /><span>商品</span></span>}>
-					<Menu.Item key="5">商品管理</Menu.Item>
-					<Menu.Item key="6">品类管理</Menu.Item>
-				</SubMenu>
-				<SubMenu key="sub2" title={<span><Icon type="appstore" /><span>订单</span></span>}>
-					<Menu.Item key="9">订单管理</Menu.Item>
-				</SubMenu>
-				<SubMenu key="sub3" title={<span><Icon type="appstore" /><span>用户</span></span>}>
-					<Menu.Item key="7">用户列表</Menu.Item>
-				</SubMenu>
+	        	{menu.map((item,i)=>{ return this.renderMenu(item,i);})}
 			</Menu>
 		</div>
 	}

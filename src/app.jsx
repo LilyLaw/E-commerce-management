@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import {BrowserRouter as Router, Switch, Link, Route, Redirect} from 'react-router-dom';
 import 'antd/dist/antd.css'
 import Home from 'page/home/index.jsx';
-// import LLLHome from 'component/layout/index.jsx';
 import IndexMenu from 'component/layout/indexMenu.jsx';
 import HeaderMenu from 'component/layout/headerMenu.jsx';
 
@@ -22,7 +21,9 @@ class App extends React.Component{
 		return (
 			<Layout id="lllwrap">
 		        <Sider collapsible={true}>
-					<IndexMenu/>
+		        	<Router>
+						<IndexMenu/>
+					</Router>
 		        </Sider>
 				<Layout>
 					<Header className="lllheader">
@@ -32,6 +33,10 @@ class App extends React.Component{
 						<Router>
 							<Switch>
 								<Route exact path="/" component={Home}/>
+								<Route exact path="/product/man" component={Home}/>
+								<Route exact path="/product/type" component={Home}/>
+								<Route exact path="/order/man" component={Home}/>
+								<Route exact path="/user/man" component={Home}/>
 								<Redirect from="*" to="/"/>
 							</Switch>
 						</Router>
