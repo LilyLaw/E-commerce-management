@@ -1,11 +1,15 @@
 import React from 'react';
 import { Menu, Icon } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import menu from './menudata.jsx';
 
 const SubMenu = Menu.SubMenu;
 
 class IndexMenu extends React.Component{
+	constructor(props){
+		super(props);
+		console.log(this.props)
+	}
 	renderMenu(item,i){
 		if(item.children){
 			return (
@@ -25,11 +29,11 @@ class IndexMenu extends React.Component{
 		}
 	}
 	render(){
+		let location = this.props.location.pathname;
 		return <div>
 			<h1 className="lll-indexmenu">LLL Man</h1>
 			<Menu
-				defaultSelectedKeys={['/']}
-				// defaultOpenKeys={['sub1']}
+				selectedKeys = {[location]}
 				mode="inline"
 				theme="dark"
 	        >
@@ -39,4 +43,7 @@ class IndexMenu extends React.Component{
 	}
 }
 
-export default IndexMenu;
+export default withRouter((props)=>{
+	let {location} = props;
+	return <IndexMenu location={location}></IndexMenu>
+});

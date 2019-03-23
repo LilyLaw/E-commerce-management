@@ -1,12 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {BrowserRouter as Router, Switch, Link, Route, Redirect} from 'react-router-dom';
-import 'antd/dist/antd.css'
-import Home from 'page/home/index.jsx';
+import {BrowserRouter as Router } from 'react-router-dom';
 import IndexMenu from 'component/layout/indexMenu.jsx';
 import HeaderMenu from 'component/layout/headerMenu.jsx';
-
+import LllRoute from 'page/lllroute.jsx'
 import { Layout } from 'antd';
+import 'antd/dist/antd.css'
 import 'component/style.scss';
 
 const {
@@ -19,30 +18,21 @@ class App extends React.Component{
 	}
 	render(){
 		return (
-			<Layout id="lllwrap">
-		        <Sider collapsible={true}>
-		        	<Router>
+			<Router>
+				<Layout id="lllwrap">
+			        <Sider collapsible={true}>
 						<IndexMenu/>
-					</Router>
-		        </Sider>
-				<Layout>
-					<Header className="lllheader">
-						<HeaderMenu />
-					</Header>
-			        <Content>
-						<Router>
-							<Switch>
-								<Route exact path="/" component={Home}/>
-								<Route exact path="/product/man" component={Home}/>
-								<Route exact path="/product/type" component={Home}/>
-								<Route exact path="/order/man" component={Home}/>
-								<Route exact path="/user/man" component={Home}/>
-								<Redirect from="*" to="/"/>
-							</Switch>
-						</Router>
-			        </Content>
-		      	</Layout>
-			</Layout>
+			        </Sider>
+					<Layout>
+						<Header className="lllheader">
+							<HeaderMenu />
+						</Header>
+				        <Content>
+							<LllRoute />
+				        </Content>
+			      	</Layout>
+				</Layout>
+			</Router>
 		)
 	}
 }
