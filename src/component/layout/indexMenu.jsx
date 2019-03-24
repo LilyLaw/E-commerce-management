@@ -8,12 +8,11 @@ const SubMenu = Menu.SubMenu;
 class IndexMenu extends React.Component{
 	constructor(props){
 		super(props);
-		console.log(this.props)
 	}
 	renderMenu(item,i){
 		if(item.children){
 			return (
-				<SubMenu key={item.url} title={<Link to={item.url}><span><Icon type="mail" /><span>{item.name}</span></span></Link>}>
+				<SubMenu key={item.url} title={<span><Icon type="mail" /><span>{item.name}</span></span>}>
 					{item.children.map((itemc,j)=>{return this.renderMenu(itemc,j);})}
 				</SubMenu>
 			)

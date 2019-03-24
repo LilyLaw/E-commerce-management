@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {BrowserRouter as Router } from 'react-router-dom';
+import {BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import IndexMenu from 'component/layout/indexMenu.jsx';
 import HeaderMenu from 'component/layout/headerMenu.jsx';
 import LllRoute from 'page/lllroute.jsx'
+import NormalLoginForm from 'page/login/index.jsx'
 import { Layout } from 'antd';
 import 'antd/dist/antd.css'
 import 'component/style.scss';
@@ -19,19 +20,25 @@ class App extends React.Component{
 	render(){
 		return (
 			<Router>
-				<Layout id="lllwrap">
-			        <Sider collapsible={true}>
-						<IndexMenu/>
-			        </Sider>
-					<Layout>
-						<Header className="lllheader">
-							<HeaderMenu />
-						</Header>
-				        <Content>
-							<LllRoute />
-				        </Content>
-			      	</Layout>
-				</Layout>
+				<Switch>
+					<Route path="/login" component={NormalLoginForm}/>
+					<Route path="/" render={(props)=>{
+						return <Layout id="lllwrap">
+					        <Sider collapsible={true}>
+								<IndexMenu/>
+					        </Sider>
+							<Layout>
+								<Header className="lllheader">
+									<HeaderMenu />
+								</Header>
+						        <Content>
+									<LllRoute />
+						        </Content>
+					      	</Layout>
+						</Layout>						
+					}}/>
+
+				</Switch>
 			</Router>
 		)
 	}
