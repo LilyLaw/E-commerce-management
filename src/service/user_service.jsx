@@ -10,6 +10,13 @@ class User{
 			data:loginInfo
 		})
 	}
+
+	logout(){
+		return _mm.request({
+			url:"/user/logout.do",
+			type:"post"
+		})
+	}
 }
 
 export default User;

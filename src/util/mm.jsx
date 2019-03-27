@@ -4,48 +4,27 @@ import qs from 'qs';
 class MUtil{
 	request(param){
 		return new Promise((resolve,reject)=>{
-			if(param.type==="get"){
-				axios.get(param.url)
-					.then(function (res) {
-						// 请求成功，返回用户数据
-						if(0===res.status){
-							typeof resolve==='function' && resolve(res.data,res.msg);
-						}
-						// 没有登录，强制登录
-						else if(10===res.status){
-							this.doLogin();
-						}else{
-							typeof reject==='function' && reject(res.msg || res.data);
-						}
-					})
-					.catch(function (err) {
-						typeof reject==='function' && reject(err.statusText);
-					});
-			}else if(param.type==="post"){
-				axios({
-						method:"post",
-					    url:param.url,
-					    headers:{
-					        'Content-type': 'application/x-www-form-urlencoded'
-					    },
-					    data:qs.stringify(param.data)
-					})
-					.then(function (res) {
-						// 请求成功，返回用户数据
-						if(0 === res.data.status){
-							typeof resolve==='function' && resolve(res.data,res.msg);
-						}
-						// 没有登录，强制登录
-						else if(10===res.data.status){
-							this.doLogin();
-						}else{
-							typeof reject==='function' && reject(res.msg || res.data);
-						}
-					})
-					.catch(function (err) {
-						typeof reject==='function' && reject(err.statusText);
-					});
-			}
+			axios({
+				method:param.type,
+			    url:param.url,
+			    headers:{'Content-type': 'application/x-www-form-urlencoded'},
+			    data:param.data?qs.stringify(param.data):''
+			})
+			.then(function (res) {
+				// 请求成功，返回用户数据
+				if(0 === res.data.status){
+					typeof resolve==='function' && resolve(res.data,res.msg);
+				}
+				// 没有登录，强制登录
+				else if(10===res.data.status){
+					this.doLogin();
+				}else{
+					typeof reject==='function' && reject(res.msg || res.data);
+				}
+			})
+			.catch(function (err) {
+				typeof reject==='function' && reject(err.statusText);
+			});
 		});
 	}
 
@@ -71,7 +50,40 @@ class MUtil{
 
 	// 错误提示
 	errorTips(msg){
-		console.log(msg||'好像哪里不对了')
+		alert(msg||'好像哪里不对了');
+	}
+
+	// localStorage 本地存储数据		思考过期时间的处理
+	setStorage(key,value){
+		let dataType = typeof value;
+
+		// 对象
+		if(dataType === "object"){
+			window.localStorage.setItem(key,JSON.stringify(value));
+		}
+		// 基础类型
+		else if(['number','string','boolean'].indexOf(dataType) >= 0){
+			window.localStorage.setItem(key,value);
+		}
+		// function 或其他类型
+		else{
+			alert("该类型不能用于本地存储");
+		}
+	}
+
+	// localStorage 本地存储取数据
+	getStorage(key){
+		let data = window.localStorage.getItem(key);
+		if(data){
+			return JSON.parse(data);
+		}else{
+			return '';
+		}
+	}
+
+	// localStorage 删除本地存储
+	removeStorage(key){
+		window.localStorage.removeItem(key);
 	}
 }
 

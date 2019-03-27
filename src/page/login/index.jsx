@@ -26,6 +26,7 @@ class NormalLoginForm extends React.Component{
 					username:this.state.username,
 					password:this.state.password
 				}).then((res)=>{
+					_mm.setStorage("userInfo",res.data);
 					this.props.history.push(this.state.redirect);
 				},(error)=>{
 					_mm.errorTips(error);
