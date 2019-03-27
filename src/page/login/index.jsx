@@ -1,5 +1,8 @@
 import React from 'react';
-import { Form, Icon, Input, Button, Checkbox, Card } from 'antd';
+import User from 'service/user_service.jsx'
+import { Form, Icon, Input, Button, Card } from 'antd';
+
+const _user = new User();
 
 class NormalLoginForm extends React.Component{
 	constructor(props){
@@ -13,7 +16,14 @@ class NormalLoginForm extends React.Component{
 		e.preventDefault();
 	    this.props.form.validateFields((err, values) => {
 			if (!err) {
-				console.log('Received values of form: ', values);
+				_user.login({
+					username:this.state.username,
+					password:this.state.password
+				}).then((res)=>{
+					console.log(res);
+				},(err)=>{
+					console.log(err);
+				})
 			}
 	    });
 	}
