@@ -1,7 +1,9 @@
 import React from 'react';
 import User from 'service/user_service.jsx'
 import { Form, Icon, Input, Button, Card } from 'antd';
+import MUtil from 'util/mm.jsx';
 
+const _mm = new MUtil();
 const _user = new User();
 
 class NormalLoginForm extends React.Component{
@@ -9,8 +11,12 @@ class NormalLoginForm extends React.Component{
 		super(props);
 		this.state={
 			username:"",
-			password:""
+			password:"",
+			redirect:_mm.getUrlParam('redirect')||'/'
 		}
+	}
+	componentWillMount(){
+		document.title = "登录";
 	}
 	handleSubmit(e){
 		e.preventDefault();
@@ -20,9 +26,9 @@ class NormalLoginForm extends React.Component{
 					username:this.state.username,
 					password:this.state.password
 				}).then((res)=>{
-					console.log(res);
-				},(err)=>{
-					console.log(err);
+					this.props.history.push(this.state.redirect);
+				},(error)=>{
+					_mm.errorTips(error);
 				})
 			}
 	    });

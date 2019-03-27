@@ -35,9 +35,8 @@ class App extends React.Component{
 									<LllRoute />
 						        </Content>
 					      	</Layout>
-						</Layout>						
+						</Layout>
 					}}/>
-
 				</Switch>
 			</Router>
 		)
