@@ -18,7 +18,6 @@ class HeaderMenu extends React.Component{
 		_user.logout().then((res)=>{
 			_mm.removeStorage('userInfo');
 			window.location.href = '/login';
-			// this.props.history.push('/login');
 		},(err)=>{
 			_mm.errTips(err);
 		})

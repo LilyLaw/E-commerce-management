@@ -10,7 +10,7 @@ class MUtil{
 			    headers:{'Content-type': 'application/x-www-form-urlencoded'},
 			    data:param.data?qs.stringify(param.data):''
 			})
-			.then(function (res) {
+			.then((res) => {
 				// 请求成功，返回用户数据
 				if(0 === res.data.status){
 					typeof resolve==='function' && resolve(res.data,res.msg);
@@ -22,7 +22,7 @@ class MUtil{
 					typeof reject==='function' && reject(res.msg || res.data);
 				}
 			})
-			.catch(function (err) {
+			.catch((err) => {
 				typeof reject==='function' && reject(err.statusText);
 			});
 		});
@@ -50,7 +50,8 @@ class MUtil{
 
 	// 错误提示
 	errorTips(msg){
-		alert(msg||'好像哪里不对了');
+		console.log(msg);
+		// alert(msg||'好像哪里不对了');
 	}
 
 	// localStorage 本地存储数据		思考过期时间的处理

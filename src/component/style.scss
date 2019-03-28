@@ -29,6 +29,49 @@ $background : #f0f2f5;
 					font-size: 2.5em;
 				}
 			}
+			.lll-pagebody{
+				margin-top:2em;
+				.indexCon{
+					display:flex;
+					justify-content: space-between;
+					.index-e-box{
+						text-decoration:none;
+						display:flex;
+						flex-direction:column;
+						align-items:center;
+						justify-content:center;
+						width:32%;
+						height:12em;
+						color:#fff;
+						cursor:pointer;
+						transition: all 0.3s ease-in;
+						h1{
+							font-size:4em;
+							color:#fff;
+							margin-bottom:0;
+							font-weight:400;
+						}
+						p{
+							font-size:1.3em;
+						}
+						&:hover{
+							color:#000;
+							transform:scale(1.05,1.1);
+							h1{
+								color:#000;
+							}
+						}
+					}
+				}
+				.lll-table{
+					tbody{
+						background:#fff;
+					}
+				}
+			}
+		}
+		.ant-layout-content{
+			height:100%;
 		}
 	}
 	#lll-login{

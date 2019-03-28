@@ -17,6 +17,17 @@ class User{
 			type:"post"
 		})
 	}
+
+	getList(pageInfo){
+		return _mm.request({
+			type:'post',
+			url:'/manage/user/list.do',
+			data:{
+				pageSize:pageInfo.pageSize,
+				pageNum:pageInfo.page
+			}
+		})
+	}
 }
 
 export default User;
