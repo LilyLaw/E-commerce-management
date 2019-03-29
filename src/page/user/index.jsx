@@ -7,7 +7,6 @@ import User from 'service/user_service.jsx';
 const _mm = new MUtil();
 const _user = new User();
 
-let dataSource = [];
 const columns = [{
   title: 'ID',
   dataIndex: 'id'
@@ -31,11 +30,12 @@ class Home extends React.Component{
 		super(props);
 		this.state={
 			page:1,
-			pageSize:15
+			pageSize:15,
+			dataSource:[]
 		}
 	}
 
-	componentWillMount(){
+	componentDidMount(){
 		this.changePage(1);
 	}
 
@@ -48,25 +48,27 @@ class Home extends React.Component{
 			res.data.list.map((item,i)=>{
 				let tmpItem = item;
 				tmpItem.key = item.id;
+				tmpItem.createTime = _mm.timestampToTime(item.createTime);
 				tmp.push(tmpItem);
 			});
-			dataSource = tmp;
 			this.setState({
 				page:e,
-				totalPage:res.data.pages
+				totalPage:res.data.pages,
+				dataSource:tmp
 			})
 		},(err)=>{
+			this.setState({dataSource:[]})
 			_mm.errorTips(err);
 		})
 	}
 
 	render(){
 		return(
-			<div id="page-wrapper">
-				<PageHeader headtitle = {"用户"} />
+			<div className="page-wrapper">
+				<PageHeader headtitle = {"用户列表"} />
 				<div className="lll-pagebody">
 					<Table className='lll-table'
-						dataSource={dataSource}
+						dataSource={this.state.dataSource}
 						columns={columns}
 						pagination={{
 							defaultCurrent:this.state.page,

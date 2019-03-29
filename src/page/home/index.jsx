@@ -62,7 +62,7 @@ class Home extends React.Component{
 
 	render(){
 		return(
-			<div id="page-wrapper">
+			<div className="page-wrapper">
 				<PageHeader headtitle = {"首页"} />
 				<div className="lll-pagebody">
 					<div className="indexCon">

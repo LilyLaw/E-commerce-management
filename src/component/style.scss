@@ -17,7 +17,7 @@ $background : #f0f2f5;
 		    line-height: 64px;
 		    text-align: center;
 		}
-		#page-wrapper{
+		.page-wrapper{
 		    padding: 2em 1.5em;
 			.lll-pagehead{
 				display:flex;
@@ -68,6 +68,25 @@ $background : #f0f2f5;
 						background:#fff;
 					}
 				}
+				.lll-productlist-table{
+					table{
+						tbody{
+							tr{
+								td:nth-child(2){
+								width:35%;
+								}
+							}
+						}
+					}
+				}
+				.lll-productlist-search{
+					padding:20px 0;
+					.ant-input-number,.ant-input{
+						width:30%;
+						max-width:300px;
+						margin-right:10px;
+					}
+				}
 			}
 		}
 		.ant-layout-content{
@@ -89,4 +108,8 @@ $background : #f0f2f5;
 			}
 		}
 	}
+}
+
+.lll-marginleft{
+	margin-left:10px;
 }
