@@ -1,12 +1,25 @@
 import React from 'react';
-import { Table, Tag, Button, Input, InputNumber  } from 'antd';
+import { Table, Tag, Button, Input, InputNumber,Popconfirm,message   } from 'antd';
 import PageHeader from 'component/commonCom/pageHeader.jsx';
 import MUtil from 'util/mm.jsx';
 import Product from 'service/product_service.jsx';
+import { Link } from 'react-router-dom';
 
 const _mm = new MUtil(),
-	  _product = new Product(),
-	  columns = [
+	  _product = new Product();
+
+class ProductList extends React.Component{
+	constructor(props){
+		super(props);
+		this.state={
+			page:1,
+			pageSize:15,
+			dataSource:[],
+			totalPage:1,
+			productName:'',
+			productId:''
+		}
+		this.columns = [
 		  	{
 				title: 'ID',
 				dataIndex: 'id'
@@ -19,46 +32,55 @@ const _mm = new MUtil(),
 			},{
 				title: '状态',
 				dataIndex: 'status',
-				render: status => (
+				render: (status,id) => (
 					<div>
-						{status ===1 ?'在售中':'已下架'}
-						{status ===1 ?<Tag color="#f50" className="lll-marginleft">下架</Tag>:<Tag color="#2db7f5" className="lll-marginleft">上架</Tag>}
+						{id.status === 1 ?'在售中':'已下架'}
+						<Popconfirm title="Are you sure delete this task?" onConfirm={this.confirm.bind(this,{status:id.status,proid:id.id})} okText="Yes" cancelText="No">
+							<Tag color={id.status === 1?"#f50":"#2db7f5"} className="lll-marginleft">{id.status === 1?'下架':'上架'} </Tag>
+						</Popconfirm>
 					</div>
 				),
 			},{
 				title: '操作',
-				dataIndex: 'createTime',
-				render: () => (
+				render: (res) => (
 					<div>
-						<Button type="primary">编辑</Button>
-						<Button type="danger" className="lll-marginleft">删除</Button>
+						<Link to={`/product/detail/${res.id}`}><Button type="primary">详情</Button></Link>
+						<Link to={`/product/edit/${res.id}`}><Button type="danger" className="lll-marginleft">编辑</Button></Link>
 					</div>
 				),
 			}
-		];
-class ProductList extends React.Component{
-	constructor(props){
-		super(props);
-		this.state={
-			page:1,
-			pageSize:15,
-			dataSource:[],
-			totalPage:1,
-			productName:'',
-			productId:''
+		]
+	}
+
+	confirm(etag) {
+		let info={
+			status : parseInt(etag.status) === 1 ? 2 : 1,
+			productId : parseInt(etag.proid)
 		}
+		_product.changeStatus(info).then((res)=>{
+			message.success('修改成功');
+			let info = {
+					pageNum:this.state.page,
+					pageSize:this.state.pageSize
+				},
+				url = '/manage/product/list.do';
+			this.getList(info,url);
+		},(err)=>{
+			_mm.errorTips(err);
+		})
 	}
 
 	componentDidMount(){
 		let info = {
-			pageNum:this.state.page,
-			pageSize:this.state.pageSize
-		}
-		this.changePage(info);
+				pageNum:this.state.page,
+				pageSize:this.state.pageSize
+			},
+			url = '/manage/product/list.do';
+		this.getList(info,url);
 	}
 
-	changePage(info){
-		_product.getProductList(info).then((res)=>{
+	getList(info,url){
+		_product.getList(info,url).then((res)=>{
 			let resarr = this.reconstrucDataSource(res.data.list);
 			this.state.dataSource= resarr,
 			this.state.totalPage=res.data.pages,
@@ -72,19 +94,6 @@ class ProductList extends React.Component{
 	onInputChange(name,e,){
 		this.setState({	[name]:e.target?e.target.value:e });
 	}
-
-	serachProduct(info){
-		_product.getSearchProductList(info).then((res)=>{
-			let resarr = this.reconstrucDataSource(res.data.list);
-			this.state.dataSource= resarr,
-			this.state.totalPage=res.data.pages,
-			this.state.page=info.pageNum
-			this.setState({});
-		},(err)=>{
-			_mm.errorTips(err);
-		})
-	}
-
 	reconstrucDataSource(arr){
 		let tmp = [];
 		arr.map((item,i)=>{
@@ -110,28 +119,36 @@ class ProductList extends React.Component{
 						<InputNumber min={1} placeholder="请输入产品id" onChange={this.onInputChange.bind(this,'productId')} />
 						<Input placeholder="请输入产品名称" onChange={this.onInputChange.bind(this,'productName')}/>
 						<Button type="primary" icon="search"
-								onClick={()=>{
-									let info = {
+							onClick={()=>{
+								let info = {
 										pageNum:1,
-										pageSize:15,
-										productId:this.state.productId,
-										productName:this.state.productName
-									}
-									this.serachProduct(info);
-								}}>搜索</Button>
+										pageSize:15
+									},
+									url = '/manage/product/search.do';
+
+								if(this.state.productId.toString().length>0){
+									info.productId = this.state.productId;
+								}
+								if(this.state.productName.length>0){
+									info.productName = this.state.productName;
+								}
+								this.getList(info,url);
+							}}>搜索</Button>
 					</div>
 					<Table className='lll-table lll-productlist-table'
 						dataSource={this.state.dataSource}
-						columns={columns}
+						columns={this.columns}
+
 						pagination={{
-							defaultCurrent:this.state.page,
+							current:this.state.page,
 							total:this.state.totalPage,
 							pageSize:this.state.pageSize,
 							onChange:(e)=>{
 								let info = {
-									pageNum:e,
-									pageSize:this.state.pageSize
-								}
+										pageNum:e,
+										pageSize:this.state.pageSize
+									},
+									url;
 								if(this.state.productId.toString().length>0||this.state.productName.length>0){
 									if(this.state.productId.toString().length>0){
 										info.productId = this.state.productId;
@@ -139,12 +156,11 @@ class ProductList extends React.Component{
 									if(this.state.productName.length>0){
 										info.productName = this.state.productName;
 									}
-
-									this.serachProduct(info);
+									url = '/manage/product/search.do';
 								}else{
-									this.changePage(info)
+									url = '/manage/product/list.do';
 								}
-
+								this.getList(info,url)
 							}
 						}}
 					/>

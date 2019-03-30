@@ -3,18 +3,18 @@ import MUtil from 'util/mm.jsx';
 const _mm = new MUtil();
 
 class Product {
-	getProductList(info){
+	getList(info,url){
 		return _mm.request({
 			type:'post',
-			url:'/manage/product/list.do',
+			url:url,
 			data:info
 		});
 	}
 
-	getSearchProductList(info){
+	changeStatus(info){
 		return _mm.request({
 			type:'post',
-			url:'/manage/product/search.do',
+			url:'/manage/product/set_sale_status.do',
 			data:info
 		});
 	}
