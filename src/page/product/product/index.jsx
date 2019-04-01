@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Tag, Button, Input, InputNumber,Popconfirm,message   } from 'antd';
+import { Table, Tag, Button, Input, InputNumber,Popconfirm, message, Icon } from 'antd';
 import PageHeader from 'component/commonCom/pageHeader.jsx';
 import MUtil from 'util/mm.jsx';
 import Product from 'service/product_service.jsx';
@@ -45,7 +45,7 @@ class ProductList extends React.Component{
 				render: (res) => (
 					<div>
 						<Link to={`/product/detail/${res.id}`}><Button type="primary">详情</Button></Link>
-						<Link to={`/product/edit/${res.id}`}><Button type="danger" className="lll-marginleft">编辑</Button></Link>
+						<Link to={`/product/save/${res.id}`}><Button type="danger" className="lll-marginleft">编辑</Button></Link>
 					</div>
 				),
 			}
@@ -113,7 +113,11 @@ class ProductList extends React.Component{
 	render(){
 		return (
 			<div className="page-wrapper">
-				<PageHeader headtitle = {"商品列表"} />
+				<PageHeader headtitle = {"商品列表"} >
+					<Link to='/product/save'>
+						<Button type="primary"> <Icon type="plus" /> 添加商品</Button>
+ 					</Link>
+				</PageHeader>
 				<div className="lll-pagebody">
 					<div className="lll-productlist-search">
 						<InputNumber min={1} placeholder="请输入产品id" onChange={this.onInputChange.bind(this,'productId')} />
