@@ -7,7 +7,7 @@ class MUtil{
 			axios({
 				method:param.type,
 			    url:param.url,
-			    headers:{'Content-type': 'application/x-www-form-urlencoded'},
+			    headers:{'Content-type': param.contentType ? param.contentType :'application/x-www-form-urlencoded'},
 			    data:param.data?qs.stringify(param.data):''
 			})
 			.then((res) => {
@@ -51,7 +51,7 @@ class MUtil{
 	// 错误提示
 	errorTips(msg){
 		console.log(msg);
-		// alert(msg||'好像哪里不对了');
+		alert(msg||'好像哪里不对了');
 	}
 
 	// localStorage 本地存储数据		思考过期时间的处理

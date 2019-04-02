@@ -51,6 +51,7 @@ class CategoryCascader extends React.Component{
 
 	onChange(e){
 		this.state.selectedCategory = e;
+		this.props.getCategory(e);
 		this.getCategoryList(e[e.length-1]);
 	}
 	render(){

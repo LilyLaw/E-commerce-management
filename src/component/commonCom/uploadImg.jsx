@@ -1,26 +1,15 @@
 import React from 'react';
 import { Form, Upload, Icon, Modal, message } from 'antd';
+import MUtil from 'util/mm.jsx';
+import Product from 'service/product_service.jsx';
+
+const _mm = new MUtil(),_product = new Product();
 
 class UploadImg extends React.Component{
 	constructor(props){
 		super(props)
 		this.state={
-			previewVisible: false,
-			previewImage: '',
-			fileList: [
-				{
-					uid: '-1',
-					name: 'xxx.png',
-					status: 'done',
-					url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-				},
-				{
-					uid: '-2',
-					name: 'xxx.png',
-					status: 'done',
-					url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-				}
-			]
+			fileList: []
 		}
 	}
 
@@ -29,15 +18,12 @@ class UploadImg extends React.Component{
 	}
 
 	handleChange(e){
-		console.log(e)
+			console.log(e)
 		let {fileList} = e;
-		let status = e.file.status;
-	    if (status !== 'uploading') {
-	        console.log(e.file, e.fileList);
-	    }
-	    if (status === 'done') {
+	    if (e.file.status === 'done') {
 	        message.success(`${e.file.name} file uploaded successfully.`);
-	    } else if (status === 'error') {
+	        this.props.getUpImg(fileList);
+	    } else if (e.file.status === 'error') {
 	        message.error(`${e.file.name} file upload failed.`);
 	    }
 
@@ -45,12 +31,8 @@ class UploadImg extends React.Component{
 	    this.setState( {fileList});
 	}
 
-	uploadbyme(e){
-		console.log(e);
-	}
-
 	render(){
-		const { previewVisible, previewImage, fileList } = this.state;
+		const { fileList } = this.state;
 	    const uploadButton = (
 	      <div>
 	        <Icon type="plus" />
@@ -64,9 +46,8 @@ class UploadImg extends React.Component{
 					action="/manage/product/upload.do"
 					listType="picture-card"
 					fileList={fileList}
-					customRequest = {this.uploadbyme.bind(this)}
-					// onPreview={this.handlePreview.bind(this)}
-					// onChange={this.handleChange.bind(this)}
+					onPreview={this.handlePreview.bind(this)}
+					onChange={this.handleChange.bind(this)}
 				>
 					{fileList.length >= 5 ? null : uploadButton}
 				</Upload>

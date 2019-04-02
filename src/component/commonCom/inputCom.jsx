@@ -5,10 +5,13 @@ class InputCom extends React.Component{
 	constructor(props){
 		super(props)
 	}
+
 	render(){
 		return (
 			<Form.Item label={this.props.title}>
-				<Input placeholder={`请输入${this.props.title}`} />
+				<Input placeholder={`请输入${this.props.title}`}
+					onChange={(e)=>{this.props.getAttrValue(e.target.value)}}
+				/>
 			</Form.Item>
         )
 	}
