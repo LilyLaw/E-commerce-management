@@ -16,6 +16,7 @@ class SaveProduct extends React.Component{
 	constructor(props){
 		super(props);
 		this.state={
+			id:this.props.match.params.id,
 			product:{
 				categoryId 		: null,
 				parentCategoryId: null,
@@ -26,17 +27,31 @@ class SaveProduct extends React.Component{
 				price 			: null,
 				stock 			: null,
 				status 			: 1
-			}
+			},
+			curStatus: this.props.match.params.id?'detail':'edit'
 		}
 	}
 
-	 handleSubmit(e){
+	componentDidMount(){
+		let id = this.state.id;
+		if(id){
+			_product.getList({productId:id},'/manage/product/detail.do').then((res)=>{
+				this.state.product = res.data;
+				this.setState({});
+			},(err)=>{
+				_mm.errorTips(err);
+			})
+		}
+	}
+
+	handleSubmit(e){
 		e.preventDefault();
 		if(this.checkInfo()){
 			console.log('验证通过');
 			let url = '/manage/product/save.do';
 			_product.getList(this.state.product,url).then((res)=>{
-				console.log(res);
+				alert('上传成功');
+				window.location.href='/product/man';
 			},(err)=>{
 				_mm.errorTips(err);
 			})
@@ -119,13 +134,43 @@ class SaveProduct extends React.Component{
 				<PageHeader headtitle = {"商品列表--添加商品"} />
 				<div className="lll-pagebody">
 					<Form {...formItemLayout} onSubmit={this.handleSubmit.bind(this)}>
-						<InputCom title='商品名称' name='name' getAttrValue = { this.getAttrValue.bind(this,'name')}/>
-						<InputCom title='商品描述' name='subtitle' getAttrValue = { this.getAttrValue.bind(this,'subtitle')}/>
-						<CategoryCascader title='所属分类' getCategory = {this.getCategory.bind(this)}/>
-						<InputNumCom title='商品价格' unit='元' getAttrValue = { this.getAttrValue.bind(this,'price')}/>
-						<InputNumCom title='商品库存' unit='件' getAttrValue = { this.getAttrValue.bind(this,'stock')}/>
-						<UploadImg title='商品图片' getUpImg = {this.getUpImg.bind(this)}/>
-						<RichEditor title='商品详情' getDetailValue={this.getDetailValue.bind(this)}/>
+						<InputCom
+							isDisable={this.state.curStatus==='detail'}
+							prodata={this.state.curStatus==='detail'?this.state.product.name:''}
+							title='商品名称'
+							name='name'
+							getAttrValue={this.getAttrValue.bind(this,'name')}/>
+						<InputCom
+							isDisable={this.state.curStatus==='detail'}
+							prodata={this.state.curStatus==='detail'?this.state.product.subtitle:''}
+							title='商品描述'
+							name='subtitle'
+							getAttrValue={this.getAttrValue.bind(this,'subtitle')}/>
+						<CategoryCascader
+							isDisable={this.state.curStatus==='detail'}
+							title='所属分类'
+							categoryId={this.state.product.categoryId}
+							getCategory={this.getCategory.bind(this)}/>
+						<InputNumCom
+							isDisable={this.state.curStatus==='detail'}
+							prodata={this.state.curStatus==='detail'?this.state.product.price:''}
+							title='商品价格'
+							unit='元'
+							getAttrValue={this.getAttrValue.bind(this,'price')}/>
+						<InputNumCom
+							isDisable={this.state.curStatus==='detail'}
+							prodata={this.state.curStatus==='detail'?this.state.product.stock:''}
+							title='商品库存'
+							unit='件'
+							getAttrValue={this.getAttrValue.bind(this,'stock')}/>
+						<UploadImg
+							isDisable={this.state.curStatus==='detail'}
+							title='商品图片'
+							getUpImg={this.getUpImg.bind(this)}/>
+						<RichEditor
+							isDisable={this.state.curStatus==='detail'}
+							title='商品详情'
+							getDetailValue={this.getDetailValue.bind(this)}/>
 						<Button style={{margin: 'auto', display: 'block'}} type="primary" htmlType="submit" >提交</Button>
 					</Form>
 				</div>

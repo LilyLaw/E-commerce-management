@@ -16,7 +16,43 @@ class CategoryCascader extends React.Component{
 	}
 
 	componentDidMount(){
-		this.getCategoryList(0);
+		// if(!this.props.isDisable){
+			this.getCategoryList(0);
+		// }
+	}
+
+	componentWillReceiveProps(nextprops){
+		if(this.props!=nextprops){
+			this.state.id = nextprops.categoryId;
+			this.setState({});
+		}
+
+	}
+
+	componentWillUpdate(){
+
+		if(this.props.categoryId && this.state.category.length>0){
+			console.log(this.state.id,this.state.category);
+			// this.state.category.map((item)=>{
+			// 	console.log(item)
+			// 	if(item.value == this.state.id){
+			// 		console.log(item);
+			// 	}
+			// })
+		}
+	}
+
+	findspec(id){
+		
+	}
+
+	getSpeCategory(specCaId){
+		console.log(specCaId);
+		_product.getList({categoryId:specCaId},'/manage/category/get_category.do').then((res)=>{
+			console.log(res);
+		},(err)=>{
+			_mm.errorTips(err);
+		})
 	}
 
 	getCategoryList(id){
@@ -57,7 +93,11 @@ class CategoryCascader extends React.Component{
 	render(){
 		return (
 			<Form.Item label={this.props.title}>
-				<Cascader options={this.state.category} onChange={this.onChange.bind(this)} />
+				<Cascader
+					options={this.state.category}
+					readOnly = {this.props.isDisable? 'readonly' :''}
+					value = {this.props.prodata}
+					onChange={this.onChange.bind(this)} />
 			</Form.Item>
         )
 	}
