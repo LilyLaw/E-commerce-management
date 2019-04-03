@@ -12,47 +12,31 @@ class CategoryCascader extends React.Component{
 		this.state = {
 			category:[],
 			selectedCategory:null,
+			proC:''
 		}
 	}
 
 	componentDidMount(){
-		// if(!this.props.isDisable){
+		if(!this.props.isDisable){
 			this.getCategoryList(0);
-		// }
+		}
 	}
 
 	componentWillReceiveProps(nextprops){
-		if(this.props!=nextprops){
-			this.state.id = nextprops.categoryId;
-			this.setState({});
+		if((this.props.isDisable)&&(this.props.categoryId!== nextprops.categoryId)){
+			let id = nextprops.categoryId.parentC;
+			_product.getList({categoryId:id},'/manage/category/get_category.do').then((res)=>{
+				let tmp = res.data;
+				tmp.map((item)=>{
+					if(item.id === nextprops.categoryId.selfC){
+						this.state.proC = item.name;
+						this.setState({});
+					}
+				})
+			},(err)=>{
+				console.log(err)
+			})
 		}
-
-	}
-
-	componentWillUpdate(){
-
-		if(this.props.categoryId && this.state.category.length>0){
-			console.log(this.state.id,this.state.category);
-			// this.state.category.map((item)=>{
-			// 	console.log(item)
-			// 	if(item.value == this.state.id){
-			// 		console.log(item);
-			// 	}
-			// })
-		}
-	}
-
-	findspec(id){
-		
-	}
-
-	getSpeCategory(specCaId){
-		console.log(specCaId);
-		_product.getList({categoryId:specCaId},'/manage/category/get_category.do').then((res)=>{
-			console.log(res);
-		},(err)=>{
-			_mm.errorTips(err);
-		})
 	}
 
 	getCategoryList(id){
@@ -93,11 +77,11 @@ class CategoryCascader extends React.Component{
 	render(){
 		return (
 			<Form.Item label={this.props.title}>
-				<Cascader
-					options={this.state.category}
-					readOnly = {this.props.isDisable? 'readonly' :''}
-					value = {this.props.prodata}
-					onChange={this.onChange.bind(this)} />
+				{
+					this.props.isDisable
+					? `${this.state.proC}`||`加载中`
+					: <Cascader options={this.state.category} onChange={this.onChange.bind(this)} />
+				}
 			</Form.Item>
         )
 	}

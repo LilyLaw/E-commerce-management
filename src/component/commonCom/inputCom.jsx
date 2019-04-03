@@ -9,11 +9,11 @@ class InputCom extends React.Component{
 	render(){
 		return (
 			<Form.Item label={this.props.title}>
-				<Input placeholder={`请输入${this.props.title}`}
-					readOnly = {this.props.isDisable? 'readonly' :''}
-					value = {this.props.prodata}
-					onChange={(e)=>{this.props.getAttrValue(e.target.value)}}
-				/>
+				{
+					this.props.isDisable
+					? `${this.props.prodata}`
+					: <Input placeholder={`请输入${this.props.title}`} onChange={(e)=>{this.props.getAttrValue(e.target.value)}}/>
+				}
 			</Form.Item>
         )
 	}

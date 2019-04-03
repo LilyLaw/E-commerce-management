@@ -87,6 +87,14 @@ $background : #f0f2f5;
 						margin-right:10px;
 					}
 				}
+				.proDetailImgList{
+					img{
+						width:10em;
+						height:100%;
+						margin-right:1em;
+						cursor:pointer;
+					}
+				}
 			}
 		}
 		.ant-layout-content{

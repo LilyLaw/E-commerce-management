@@ -13,12 +13,20 @@ class UploadImg extends React.Component{
 		}
 	}
 
+	componentWillReceiveProps(nextprops){
+		if((this.props!=nextprops)&&(nextprops.isDisable)){
+			this.state.fileList = nextprops.imgdata.split('.png');
+			this.state.imgHost = nextprops.imgHost;
+			this.setState({})
+		}
+	}
+
 	handlePreview(e){
 		console.log(e)
 	}
 
 	handleChange(e){
-			console.log(e)
+		console.log(e)
 		let {fileList} = e;
 	    if (e.file.status === 'done') {
 	        message.success(`${e.file.name} file uploaded successfully.`);
@@ -41,16 +49,24 @@ class UploadImg extends React.Component{
 	    );
 		return (
 			<Form.Item label='商品图片'>
-				<Upload
-					name="upload_file"
-					action="/manage/product/upload.do"
-					listType="picture-card"
-					fileList={fileList}
-					onPreview={this.handlePreview.bind(this)}
-					onChange={this.handleChange.bind(this)}
-				>
-					{fileList.length >= 5 ? null : uploadButton}
-				</Upload>
+				{this.props.isDisable
+					?<div className="proDetailImgList">
+						{this.state.fileList.map((item,i)=>{
+								if(item.length>0){
+									return <img src={`${this.state.imgHost}${item}.png`} key={i} alt=""/>
+								}
+						})}
+					 </div>
+					:<Upload
+						name="upload_file"
+						action="/manage/product/upload.do"
+						listType="picture-card"
+						fileList={fileList}
+						onPreview={this.handlePreview.bind(this)}
+						onChange={this.handleChange.bind(this)}>
+						{fileList.length >= 5 ? null : uploadButton}
+					 </Upload>
+				}
 			</Form.Item>
         )
 	}

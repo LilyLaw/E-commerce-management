@@ -9,20 +9,18 @@ class RichEditor extends React.Component{
 	}
 
 	componentDidMount(){
-		this.initEditor();
+		if(!this.props.isDisable){
+			this.initEditor();
+		}
 	}
 
 	initEditor(){
 		let editor = this.refs['richEditor'];
-
 		this.richEditor = new Simditor({
 			textarea: $(editor),
 			placeholder: '请输入',
-			toolbar: ['title',  'bold',  'italic',  'underline',  'strikethrough',  'fontScale',  'color',  'ol',  'ul',  'blockquote',  'code',  'table',  'link',  'image',  'hr',  'indent',  'outdent',  'alignment'],
-			
+			toolbar: ['title',  'bold',  'italic',  'underline',  'strikethrough',  'fontScale',  'color',  'ol',  'ul',  'blockquote',  'code',  'table',  'link',  'image',  'hr',  'indent',  'outdent',  'alignment']
 		});
-
-
 		this.bindValueChange();
 	}
 
@@ -36,7 +34,10 @@ class RichEditor extends React.Component{
 	render(){
 		return (
 			<Form.Item label={this.props.title}>
-				<textarea ref='richEditor' ></textarea>
+			{this.props.isDisable
+				? <div dangerouslySetInnerHTML = {{__html:this.props.prodetail}}></div>
+				: <textarea ref='richEditor' ></textarea>
+			}
 			</Form.Item>
         )
 	}

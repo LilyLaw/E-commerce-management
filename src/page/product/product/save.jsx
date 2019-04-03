@@ -129,46 +129,50 @@ class SaveProduct extends React.Component{
 			},
 		};
 
+		let curStatus = this.state.curStatus,product = this.state.product;
 		return (
 			<div className="page-wrapper">
 				<PageHeader headtitle = {"商品列表--添加商品"} />
 				<div className="lll-pagebody">
 					<Form {...formItemLayout} onSubmit={this.handleSubmit.bind(this)}>
 						<InputCom
-							isDisable={this.state.curStatus==='detail'}
-							prodata={this.state.curStatus==='detail'?this.state.product.name:''}
+							isDisable={curStatus==='detail'}
+							prodata={curStatus==='detail'?product.name:''}
 							title='商品名称'
 							name='name'
 							getAttrValue={this.getAttrValue.bind(this,'name')}/>
 						<InputCom
-							isDisable={this.state.curStatus==='detail'}
-							prodata={this.state.curStatus==='detail'?this.state.product.subtitle:''}
+							isDisable={curStatus==='detail'}
+							prodata={curStatus==='detail'?product.subtitle:''}
 							title='商品描述'
 							name='subtitle'
 							getAttrValue={this.getAttrValue.bind(this,'subtitle')}/>
 						<CategoryCascader
-							isDisable={this.state.curStatus==='detail'}
+							isDisable={curStatus==='detail'}
 							title='所属分类'
-							categoryId={this.state.product.categoryId}
+							categoryId={{parentC:product.parentCategoryId, selfC:product.categoryId}}
 							getCategory={this.getCategory.bind(this)}/>
 						<InputNumCom
-							isDisable={this.state.curStatus==='detail'}
-							prodata={this.state.curStatus==='detail'?this.state.product.price:''}
+							isDisable={curStatus==='detail'}
+							prodata={curStatus==='detail'?product.price:''}
 							title='商品价格'
 							unit='元'
 							getAttrValue={this.getAttrValue.bind(this,'price')}/>
 						<InputNumCom
-							isDisable={this.state.curStatus==='detail'}
-							prodata={this.state.curStatus==='detail'?this.state.product.stock:''}
+							isDisable={curStatus==='detail'}
+							prodata={curStatus==='detail'?product.stock:''}
 							title='商品库存'
 							unit='件'
 							getAttrValue={this.getAttrValue.bind(this,'stock')}/>
 						<UploadImg
-							isDisable={this.state.curStatus==='detail'}
+							isDisable={curStatus==='detail'}
+							imgHost={curStatus==='detail'?product.imageHost:''}
+							imgdata={curStatus==='detail'?product.subImages:''}
 							title='商品图片'
 							getUpImg={this.getUpImg.bind(this)}/>
 						<RichEditor
-							isDisable={this.state.curStatus==='detail'}
+							isDisable={curStatus==='detail'}
+							prodetail={curStatus==='detail'?product.detail:''}
 							title='商品详情'
 							getDetailValue={this.getDetailValue.bind(this)}/>
 						<Button style={{margin: 'auto', display: 'block'}} type="primary" htmlType="submit" >提交</Button>
