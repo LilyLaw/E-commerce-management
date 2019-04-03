@@ -28,12 +28,22 @@ class SaveProduct extends React.Component{
 				stock 			: null,
 				status 			: 1
 			},
-			curStatus: this.props.match.params.id?'detail':'edit'
+			curStatus: this.props.match.params.id
+							?(
+								(this.props.match.path.indexOf('edit')!==-1)
+								?'edit'
+								:'detail'
+							 )
+							:'new'
 		}
 	}
 
 	componentDidMount(){
 		let id = this.state.id;
+		this.getProdet(id);
+	}
+
+	getProdet(id){
 		if(id){
 			_product.getList({productId:id},'/manage/product/detail.do').then((res)=>{
 				this.state.product = res.data;
@@ -110,8 +120,15 @@ class SaveProduct extends React.Component{
 	getUpImg(e){
 		let tmp = '';
 		e.map((item)=>{
-			tmp += item.response.data.uri;
+			if(item.response){
+				tmp += item.response.data.uri;
+			}else{
+				tmp += item.name;
+			}
+			tmp += ',';
 		});
+
+		tmp = tmp.substring(0,tmp.length-1);
 
 		this.state.product.subImages = tmp;
 		this.setState({});
@@ -137,13 +154,13 @@ class SaveProduct extends React.Component{
 					<Form {...formItemLayout} onSubmit={this.handleSubmit.bind(this)}>
 						<InputCom
 							isDisable={curStatus==='detail'}
-							prodata={curStatus==='detail'?product.name:''}
+							prodata={curStatus!=='new'?product.name:''}
 							title='商品名称'
 							name='name'
 							getAttrValue={this.getAttrValue.bind(this,'name')}/>
 						<InputCom
 							isDisable={curStatus==='detail'}
-							prodata={curStatus==='detail'?product.subtitle:''}
+							prodata={curStatus!=='new'?product.subtitle:''}
 							title='商品描述'
 							name='subtitle'
 							getAttrValue={this.getAttrValue.bind(this,'subtitle')}/>
@@ -154,25 +171,25 @@ class SaveProduct extends React.Component{
 							getCategory={this.getCategory.bind(this)}/>
 						<InputNumCom
 							isDisable={curStatus==='detail'}
-							prodata={curStatus==='detail'?product.price:''}
+							prodata={curStatus!=='new'?product.price:''}
 							title='商品价格'
 							unit='元'
 							getAttrValue={this.getAttrValue.bind(this,'price')}/>
 						<InputNumCom
 							isDisable={curStatus==='detail'}
-							prodata={curStatus==='detail'?product.stock:''}
+							prodata={curStatus!=='new'?product.stock:''}
 							title='商品库存'
 							unit='件'
 							getAttrValue={this.getAttrValue.bind(this,'stock')}/>
 						<UploadImg
 							isDisable={curStatus==='detail'}
-							imgHost={curStatus==='detail'?product.imageHost:''}
-							imgdata={curStatus==='detail'?product.subImages:''}
+							imgHost={curStatus!=='new'?product.imageHost:''}
+							imgdata={curStatus!=='new'?product.subImages:''}
 							title='商品图片'
 							getUpImg={this.getUpImg.bind(this)}/>
 						<RichEditor
 							isDisable={curStatus==='detail'}
-							prodetail={curStatus==='detail'?product.detail:''}
+							prodetail={curStatus!=='new'?product.detail:''}
 							title='商品详情'
 							getDetailValue={this.getDetailValue.bind(this)}/>
 						<Button style={{margin: 'auto', display: 'block'}} type="primary" htmlType="submit" >提交</Button>

@@ -44,8 +44,12 @@ class ProductList extends React.Component{
 				title: '操作',
 				render: (res) => (
 					<div>
-						<Link to={`/product/detail/${res.id}`}><Button type="primary">详情</Button></Link>
-						<Link to={`/product/save/${res.id}`}><Button type="danger" className="lll-marginleft">编辑</Button></Link>
+						<Link to={`/product/detail/${res.id}`}>
+							<Button type="primary">详情</Button>
+						</Link>
+						<Link to={`/product/edit/${res.id}`}>
+							<Button type="danger" className="lll-marginleft">编辑</Button>
+						</Link>
 					</div>
 				),
 			}

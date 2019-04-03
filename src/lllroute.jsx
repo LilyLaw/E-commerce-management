@@ -13,7 +13,7 @@ class LllRoute extends React.Component{
 				<Route exact path="/" component={Home}/>
 				<Route path="/product/man" component={ProductList}/>
 				<Route path="/product/save" component={SaveProduct}/>
-				<Route path="/product/save/:id" component={SaveProduct}/>
+				<Route path="/product/edit/:id" component={SaveProduct}/>
 				<Route path="/product/detail/:id" component={SaveProduct}/>
 				<Route path="/product/type" component={Home}/>
 				<Route path="/order/man" component={Home}/>

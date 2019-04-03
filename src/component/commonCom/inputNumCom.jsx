@@ -12,7 +12,7 @@ class InputNumCom extends React.Component{
 				{
 					this.props.isDisable
 					? `${this.props.prodata} ${this.props.unit}`
-					: <Input type='number' addonAfter={this.props.unit} onChange={(e)=>{this.props.getAttrValue(parseFloat(e.target.value))}}/>
+					: <Input type='number' value={this.props.prodata} addonAfter={this.props.unit} onChange={(e)=>{this.props.getAttrValue(parseFloat(e.target.value))}}/>
 				}
 			</Form.Item>
         )

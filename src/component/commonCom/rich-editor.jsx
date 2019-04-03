@@ -6,11 +6,20 @@ import 'simditor/styles/simditor.scss'
 class RichEditor extends React.Component{
 	constructor(props){
 		super(props)
+		this.state={
+			prodetail:this.props.prodetail
+		}
 	}
 
 	componentDidMount(){
 		if(!this.props.isDisable){
 			this.initEditor();
+		}
+	}
+
+	componentWillReceiveProps(nextprops){
+		if((!this.props.isDisable)&&(nextprops.prodetail !== this.props.prodetail)){
+			this.richEditor.setValue(nextprops.prodetail);
 		}
 	}
 
