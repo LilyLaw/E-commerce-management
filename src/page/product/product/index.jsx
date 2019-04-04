@@ -123,7 +123,7 @@ class ProductList extends React.Component{
  					</Link>
 				</PageHeader>
 				<div className="lll-pagebody">
-					<div className="lll-productlist-search">
+					<div className="lll-list-search">
 						<InputNumber min={1} placeholder="请输入产品id" onChange={this.onInputChange.bind(this,'productId')} />
 						<Input placeholder="请输入产品名称" onChange={this.onInputChange.bind(this,'productName')}/>
 						<Button type="primary" icon="search"
@@ -143,10 +143,9 @@ class ProductList extends React.Component{
 								this.getList(info,url);
 							}}>搜索</Button>
 					</div>
-					<Table className='lll-table lll-productlist-table'
+					<Table className='lll-table lll-list-table'
 						dataSource={this.state.dataSource}
 						columns={this.columns}
-
 						pagination={{
 							current:this.state.page,
 							total:this.state.totalPage,
