@@ -15,13 +15,13 @@ class UploadImg extends React.Component{
 
 	componentWillReceiveProps(nextprops){
 		if((this.props!=nextprops)&&(nextprops.isDisable)){
-			this.state.fileList = nextprops.imgdata.split('g');
+			this.state.fileList = nextprops.imgdata.split(',');
 			this.state.imgHost = nextprops.imgHost;
 			this.setState({})
 		}
 
 		if((this.props!=nextprops)&&(!nextprops.isDisable)&&(nextprops.imgdata.length>0)){
-			let imgs = nextprops.imgdata.split('g'),
+			let imgs = nextprops.imgdata.split(','),
 				imgHost = nextprops.imgHost;
 			let fileList = [];
 
@@ -29,9 +29,9 @@ class UploadImg extends React.Component{
 				if(item.length>0){
 					let tmp = {
 						uid:i,
-						name: item+'.png',
+						name: item,
 						status:'done',
-						url:`${imgHost}${item}g`
+						url:`${imgHost}${item}`
 					}
 					fileList.push(tmp);
 				}
@@ -46,7 +46,6 @@ class UploadImg extends React.Component{
 	}
 
 	handleChange(e){
-		console.log(e)
 		let {fileList} = e;
 	    if (e.file.status === 'done') {
 	        message.success(`${e.file.name} file uploaded successfully.`);
@@ -73,7 +72,7 @@ class UploadImg extends React.Component{
 					?<div className="proDetailImgList">
 						{this.state.fileList.map((item,i)=>{
 								if(item.length>0){
-									return <img src={`${this.state.imgHost}${item}g`} key={i} alt=""/>
+									return <img src={`${this.state.imgHost}${item}`} key={i} alt=""/>
 								}
 						})}
 					 </div>
