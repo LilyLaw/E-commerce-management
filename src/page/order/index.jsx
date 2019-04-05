@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table } from 'antd';
+import { Table, Button, InputNumber } from 'antd';
 import PageHeader from 'component/commonCom/pageHeader.jsx';
 import MUtil from 'util/mm.jsx';
 import Order from 'service/order_service.jsx';
@@ -11,79 +11,108 @@ class OrderList extends React.Component{
 	constructor(props){
 		super(props)
 		this.state={
-
+			dataSource 	: [],
+			pageSize 	: 15,
+			pageNum 	: 1,
+			totalPage 	: 1,
+			orderNo 	: ''
 		}
 		this.columns = [
 		  	{
 				title: '订单号',
-				dataIndex: 'id'
+				dataIndex: 'orderNo'
 			}, {
 				title: '收件人',
-				dataIndex: 'title'
+				dataIndex: 'receiverName'
 			},{
 				title: '状态',
-				dataIndex: 'status',
-				render: (status,id) => (
-					<div>
-						{id.status === 1 ?'在售中':'已下架'}
-						<Popconfirm title="Are you sure delete this task?" onConfirm={this.confirm.bind(this,{status:id.status,proid:id.id})} okText="Yes" cancelText="No">
-							<Tag color={id.status === 1?"#f50":"#2db7f5"} className="lll-marginleft">{id.status === 1?'下架':'上架'} </Tag>
-						</Popconfirm>
-					</div>
-				)
+				dataIndex: 'status'
 			},{
 				title: '订单总价',
-				dataIndex: 'price'
+				dataIndex: 'payment'
 			},{
 				title: '创建时间',
-				dataIndex: 'createtime'
+				dataIndex: 'createTime'
 			},{
 				title: '操作',
-				render: (res) => (
-					<div>
-						<Link to={`/product/detail/${res.id}`}>
-							<Button type="primary">详情</Button>
-						</Link>
-						<Link to={`/product/save/${res.id}`}>
-							<Button type="danger" className="lll-marginleft">编辑</Button>
-						</Link>
-					</div>
-				),
+				render: (res) => (<Link to={`/order/detail/${res.orderNo}`}><Button type="primary">详情</Button></Link>)
 			}
 		]
 	}
- 
+
+	componentDidMount(){
+		let info = {pageSize:this.state.pageSize,pageNum:this.state.pageNum}
+		this.getList(info,'/manage/order/list.do');
+	}
+
+	getList(info,url){
+		_order.getList(info,url).then((res)=>{
+			this.state.dataSource = this.reconstrucList(res.data.list);
+			this.state.totalPage = res.data.pages;
+			this.state.pageNum = info.pageNum;
+			this.setState({})
+		},(err)=>{
+			_mm.errorTips(err);
+		})
+	}
+
+	reconstrucList(arr){
+		let tmp = [];
+		arr.map((item,i)=>{
+			let rtmp = {
+				orderNo 	:item.orderNo,
+				receiverName:item.receiverName,
+				status 		:item.status,
+				payment 	:item.payment,
+				createTime 	:item.createTime,
+				key 		:i
+			}
+			tmp.push(rtmp);
+		})
+		return tmp;
+	}
+
+	onInputChange(e){
+		this.state.orderNo = e;
+		this.setState({})
+	}
+
 	render(){
 		return (
 			<div className="page-wrapper">
 				<PageHeader headtitle = {"订单列表"} />
 				<div className="lll-pagebody">
 					<div className="lll-list-search">
-						
+						<InputNumber min={1} placeholder="请输入订单编号" onChange={this.onInputChange.bind(this)} />
+						<Button type="primary" icon="search"
+							onClick={()=>{
+								let info = {
+										pageNum:1,
+										pageSize:15
+									},url = '/manage/order/search.do';
+								if(this.state.orderNo.toString().length>0){
+									info.orderNo = this.state.orderNo;
+								}
+								this.getList(info,url);
+							}}>搜索</Button>
 					</div>
 					<Table className='lll-table lll-ist-table'
 						dataSource={this.state.dataSource}
 						columns={this.columns}
 						pagination={{
-							current:this.state.page,
+							current:this.state.pageNum,
 							total:this.state.totalPage,
 							pageSize:this.state.pageSize,
 							onChange:(e)=>{
 								let info = {
 										pageNum:e,
 										pageSize:this.state.pageSize
-									},
-									url;
-								if(this.state.productId.toString().length>0||this.state.productName.length>0){
-									if(this.state.productId.toString().length>0){
-										info.productId = this.state.productId;
-									}
-									if(this.state.productName.length>0){
-										info.productName = this.state.productName;
-									}
-									url = '/manage/product/search.do';
+									},url;
+								if(this.state.orderNo.toString().length>0){
+									info.orderNo = this.state.orderNo;
+									url = '/manage/order/search.do';
 								}else{
-									url = '/manage/product/list.do';
+									url = '/manage/order/list.do';
 								}
 								this.getList(info,url)
 							}
