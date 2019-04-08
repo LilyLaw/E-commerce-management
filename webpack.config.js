@@ -10,7 +10,7 @@ module.exports = {
 	entry: './src/app.jsx',
 	output: {
 		path: path.resolve(__dirname, 'dist'),
-		publicPath: WEBPACK_ENV ==='dev' ? '/dist/' : '/dist/',
+		publicPath: WEBPACK_ENV ==='dev' ? '/dist/' : '',
 		// publicPath: WEBPACK_ENV ==='dev' ? '/dist/' : '//static.lulilin.top/E-commerce-management/dist',
 		filename: 'js/app.js'
 	},
