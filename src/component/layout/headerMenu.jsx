@@ -34,7 +34,7 @@ class HeaderMenu extends React.Component{
 
 		return (
 			<Dropdown overlay={menu}>
-				<a className="ant-dropdown-link" href="#">
+				<a className="ant-dropdown-link" href="/login">
 				<Icon type="user" />
 					{
 						this.state.username.length > 0
